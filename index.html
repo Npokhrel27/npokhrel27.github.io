@@ -4,17 +4,185 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Niranjan Pokhrel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-deep:    #0d0d1a;
+      --bg-card:    #13132b;
+      --bg-nav:     #10102099;
+      --accent1:    #7F77DD;
+      --accent2:    #1D9E75;
+      --text-main:  #e8e8f0;
+      --text-muted: #8b8ba8;
+      --border:     rgba(255,255,255,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-main); min-height: 100vh; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-nav); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-logo { font-size: 15px; font-weight: 600; letter-spacing: 0.5px; background: linear-gradient(90deg, var(--accent1), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: var(--text-muted); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text-main); }
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 80px 5% 60px; position: relative; overflow: hidden; text-align: center; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(127,119,221,0.12) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { position: relative; max-width: 640px; }
+    .avatar { width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid rgba(127,119,221,0.4); margin: 0 auto 24px; background: linear-gradient(135deg, var(--accent1), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 600; color: #fff; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 600; letter-spacing: -0.5px; margin-bottom: 10px; color: #fff; }
+    .hero-role { font-size: 16px; color: var(--text-muted); margin-bottom: 20px; }
+    .hero-role span { color: var(--accent2); font-weight: 500; }
+    .hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .hero-tag { font-size: 12px; padding: 5px 13px; border-radius: 20px; background: rgba(127,119,221,0.12); border: 1px solid rgba(127,119,221,0.25); color: #AFA9EC; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff; text-decoration: none; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline { padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; background: transparent; color: var(--text-main); border: 1px solid var(--border); text-decoration: none; transition: border-color 0.2s; }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.25); }
+    section { padding: 80px 5%; max-width: 900px; margin: 0 auto; }
+    .section-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent1); font-weight: 500; margin-bottom: 10px; }
+    .section-title { font-size: clamp(22px, 3vw, 28px); font-weight: 600; color: #fff; margin-bottom: 32px; }
+    .divider { height: 1px; background: var(--border); margin: 0 5%; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+    .about-card-icon { font-size: 22px; margin-bottom: 12px; }
+    .about-card h3 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 8px; }
+    .about-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    .research-list { display: flex; flex-direction: column; gap: 16px; }
+    .research-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; display: flex; gap: 16px; align-items: flex-start; }
+    .research-num { font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(--accent1); min-width: 28px; padding-top: 3px; }
+    .research-item h3 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+    .research-item p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    .research-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .chip { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(29,158,117,0.12); color: #5DCAA5; border: 1px solid rgba(29,158,117,0.2); }
+    .contact-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 36px; text-align: center; }
+    .contact-box p { font-size: 15px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.7; }
+    .contact-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .contact-link { display: flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-main); text-decoration: none; font-size: 14px; transition: background 0.2s, border-color 0.2s; }
+    .contact-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); }
+    .contact-link svg { width: 16px; height: 16px; }
+    footer { text-align: center; padding: 32px 5%; font-size: 13px; color: var(--text-muted); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } .nav-links { gap: 16px; } .hero { padding-top: 100px; } }
+  </style>
 </head>
 <body>
-  <img src="niranjan_photo.jpeg" alt="Niranjan Pokhrel" width="200" />
-  <h1>Hi, I'm Niranjan Pokhrel 👋</h1>
-  <p>Welcome to my personal website!</p>
-  <p>I'm Ph.D. student at University of Nebraska-Lincoln.</p>
-
-  <h2>About Me</h2>
-  <p> I work with corn and dig into roots and genetics.</p>
-
-  <h2>Contact</h2>
-  <p>Email: npokhrel3@huskers.unl.edu</p>
+  <nav>
+    <span class="nav-logo">NP</span>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="avatar">
+        <img src="niranjan_photo.jpeg" alt="Niranjan Pokhrel" onerror="this.style.display='none'"/>
+        NP
+      </div>
+      <h1>Niranjan Pokhrel</h1>
+      <p class="hero-role">Ph.D. Student · <span>University of Nebraska-Lincoln</span></p>
+      <div class="hero-tags">
+        <span class="hero-tag">Corn Genetics</span>
+        <span class="hero-tag">Root Biology</span>
+        <span class="hero-tag">Plant Science</span>
+      </div>
+      <div class="hero-btns">
+        <a href="mailto:npokhrel3@huskers.unl.edu" class="btn-primary">Get in touch</a>
+        <a href="#research" class="btn-outline">View Research</a>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <section id="about">
+    <p class="section-label">Who I am</p>
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-icon">🌽</div>
+        <h3>Research Focus</h3>
+        <p>I work with corn and dig into roots and genetics — exploring how root architecture shapes crop performance and resilience.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🎓</div>
+        <h3>Education</h3>
+        <p>Ph.D. student at the University of Nebraska-Lincoln, one of the leading institutions in plant and agricultural sciences.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🔬</div>
+        <h3>Approach</h3>
+        <p>Combining field observations with genomic tools to understand how corn roots respond to environmental conditions.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📍</div>
+        <h3>Location</h3>
+        <p>Based in Lincoln, Nebraska — the heart of the Cornhusker State and a hub for agricultural innovation.</p>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+  <section id="research">
+    <p class="section-label">What I work on</p>
+    <h2 class="section-title">Research</h2>
+    <div class="research-list">
+      <div class="research-item">
+        <span class="research-num">01</span>
+        <div>
+          <h3>Corn Root Architecture</h3>
+          <p>Investigating how root structure in maize influences water and nutrient uptake, with implications for drought tolerance and yield stability.</p>
+          <div class="research-chips">
+            <span class="chip">Maize</span>
+            <span class="chip">Root biology</span>
+            <span class="chip">Phenotyping</span>
+          </div>
+        </div>
+      </div>
+      <div class="research-item">
+        <span class="research-num">02</span>
+        <div>
+          <h3>Plant Genetics & Genomics</h3>
+          <p>Using genetic and genomic tools to identify genes and pathways underlying root development in corn, connecting genotype to phenotype.</p>
+          <div class="research-chips">
+            <span class="chip">Genetics</span>
+            <span class="chip">Genomics</span>
+            <span class="chip">QTL mapping</span>
+          </div>
+        </div>
+      </div>
+      <div class="research-item">
+        <span class="research-num">03</span>
+        <div>
+          <h3>Crop Improvement</h3>
+          <p>Translating fundamental discoveries in root biology into practical strategies for breeding more resilient and productive corn varieties.</p>
+          <div class="research-chips">
+            <span class="chip">Breeding</span>
+            <span class="chip">Crop science</span>
+            <span class="chip">Sustainability</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+  <section id="contact">
+    <p class="section-label">Say hello</p>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-box">
+      <p>I'm always happy to connect with fellow researchers, collaborators, or anyone curious about plant science. Feel free to reach out!</p>
+      <div class="contact-links">
+        <a href="mailto:npokhrel3@huskers.unl.edu" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          npokhrel3@huskers.unl.edu
+        </a>
+        <a href="https://unl.edu" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+          UNL Profile
+        </a>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>© 2026 Niranjan Pokhrel · University of Nebraska-Lincoln</p>
+  </footer>
 </body>
 </html>
